@@ -42,10 +42,7 @@ class EmployeesPage extends CRUDPage
 
             $this->alert['message'] = $message;
         }
-
     }
-
-
     protected function pageBody()
     {
         $html = "";
@@ -56,15 +53,41 @@ class EmployeesPage extends CRUDPage
 
         //získat data
         $employees = Employee::getAll(['name' => 'ASC']);
+
         //prezentovat data
-        $html .= MustacheProvider::get()->render('employeeList',['employees' => $employees]);
+        $html .= MustacheProvider::get()->render('employeeList', [
+            'employees' => $employees,
+            'isAdmin' => isset($_SESSION['admin']) && $_SESSION['admin'] === true
+        ]);
 
         return $html;
     }
 
+    protected function checkPermissions(): void
+    {
+        parent::checkPermissions();
+
+        // not logged in users can't access this page
+        if (!isset($_SESSION['user'])) {
+            $this->redirect('/active/public/login.php');
+        }
+    }
+
+    protected function checkAdminPermissions(): void
+    {
+        parent::checkAdminPermissions();
+
+        // logged in users can view the employees list
+        if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
+            // hide the edit and delete buttons from non-admin users
+            $employees = Employee::getAll(['name' => 'ASC']);
+            foreach ($employees as &$employee) {
+                unset($employee['edit_url']);
+                unset($employee['delete_url']);
+            }
+        }
+    }
 }
 
-$page = new EmployeesPage();
-$page->render();
 
 ?>

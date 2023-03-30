@@ -15,6 +15,7 @@
             <td>{{room}}</td>
             <td>{{wage}}</td>
             <td>{{job}}</td>
+            {{#isAdmin}} 
             <td>
                 <form action="update.php" method="get" style="display: inline-block"> 
                     <input type="hidden" name="employeeId" value="{{employee_id}}">
@@ -27,11 +28,13 @@
             </td>
 
         </tr>
+        {{/isAdmin}} 
     {{/employees}}
     {{^employees}}
         <tr><td colspan="3">Databáze je prázdná</td></tr>
     {{/employees}}
 
 </table>
-
+{{#isAdmin}} 
 <a href="create.php" class="btn btn-primary">Zapsat nového zaměstnance</a>
+{{/isAdmin}} 

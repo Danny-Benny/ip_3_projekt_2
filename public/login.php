@@ -27,21 +27,27 @@ class LoginPage extends BasePage
         return;
     }
 
-    $stmt = PDOProvider::get()->prepare("SELECT login, password FROM employee WHERE login = :login");
+    $stmt = PDOProvider::get()->prepare("SELECT login, password, admin FROM employee WHERE login = :login");
     $stmt->execute([':login' => $login]);
     $user = $stmt->fetch();
 
 
     if($password === $user->password){
         $_SESSION['user'] = $user->login;
+
+        if($user->admin == 1)
+            $_SESSION['admin'] = true;
+        
         var_dump($user->login);
         header("Location: index.php");
         exit;
-    } else {
+    } 
+    else {
         $this->addErrorMessage("Nesprávné uživatelské jméno nebo heslo.");
         return;
     }
     }
+    
 
     protected function pageBody() : string 
     {

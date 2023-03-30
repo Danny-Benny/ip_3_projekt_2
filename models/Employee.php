@@ -108,10 +108,23 @@ class Employee
             }
         }
     }
+
+    public static function checkAdminPermissions(): bool {
+        if (isset($_SESSION['admin']) && $_SESSION['admin']) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     public function insert() : bool {
     $query = "INSERT INTO ".self::DB_TABLE." (`name`, `surname`, `job`, `wage`, `room`, `login`, `password`, `admin`) VALUES (:name, :surname, :job, :wage, :room, :login, :password, :admin)";
     $stmt = PDOProvider::get()->prepare($query);
+    if ($this->admin == 'on') {
+        $admin = 1;
+    } else {
+        $admin = 0;
+    }
     $result = $stmt->execute([
         'name' => $this->name,
         'surname' => $this->surname,
@@ -120,7 +133,7 @@ class Employee
         'room' => $this->room,
         'login' => $this->login,
         'password' => $this->password,
-        'admin' => $this->admin
+        'admin' => $admin
     ]);
 
     if (!$result) {

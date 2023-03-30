@@ -72,15 +72,15 @@ abstract class BasePage
             exit;
         }
 
-        catch (Exception $e)
-        {
-            if (AppConfig::get('debug'))
-                throw $e;
+        // catch (Exception $e)
+        // {
+        //     if (AppConfig::get('debug'))
+        //         throw $e;
 
-            $e = new BaseException("Server error", 500);
-            $exceptionPage = new ExceptionPage($e);
-            $exceptionPage->render();
-            exit;
-        }
+        //     $e = new BaseException("Server error", 500);
+        //     $exceptionPage = new ExceptionPage($e);
+        //     $exceptionPage->render();
+        //     exit;
+        // }
     }
 }
