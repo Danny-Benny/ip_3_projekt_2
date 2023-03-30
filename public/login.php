@@ -36,7 +36,7 @@ class LoginPage extends BasePage
         $_SESSION['user'] = $user->login;
 
         if($user->admin == 1)
-            $_SESSION['admin'] = true;
+            $_SESSION['admin'] = 1;
         
         var_dump($user->login);
         header("Location: index.php");

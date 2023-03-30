@@ -35,8 +35,11 @@ abstract class BasePage
 
     protected function pageHeader() : string
     {
+        session_start();
         $m = MustacheProvider::get();
-        return $m->render('header',[]);
+        return $m->render('header',[
+            "logged" => isset($_SESSION['user'])
+        ]);
     }
 
     abstract protected function pageBody();

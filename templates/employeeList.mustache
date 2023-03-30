@@ -12,7 +12,7 @@
             <td>
                 <a href='detail.php?employeeId={{employee_id}}'> {{surname}} {{name}}</a>
             </td>
-            <td>{{room}}</td>
+            <td>{{room_name}}</td>
             <td>{{wage}}</td>
             <td>{{job}}</td>
             {{#isAdmin}} 
@@ -26,9 +26,9 @@
                     <input type="submit" value="Smazat" class="btn btn-danger" onclick="return confirm('Opravdu chcete smazat zaměstnance?\nAkce je nevratná!');">
                 </form>
             </td>
+            {{/isAdmin}} 
 
         </tr>
-        {{/isAdmin}} 
     {{/employees}}
     {{^employees}}
         <tr><td colspan="3">Databáze je prázdná</td></tr>

@@ -10,6 +10,7 @@ class Employee
     public ?string $job;
     public ?int $wage;
     public ?string $room;
+    public ?string $room_name;
     public ?string $login;
     public ?string $password;
     public ?bool $admin;
@@ -61,13 +62,18 @@ class Employee
         if (count($sorting)) {
             $SQLchunks = [];
             foreach ($sorting as $field => $direction) {
-                $SQLchunks[] = "`{$field}` {$direction}";
+                $SQLchunks[] = "e.`{$field}` {$direction}";
             }
             $sortSQL = " ORDER BY " . implode(', ', $SQLchunks);
         }
 
+        /*
+        select e.*, r.name as room_name 
+        from employee as e 
+        inner join room as r on e.room = r.room_id;
+        */
         $pdo = PDOProvider::get();
-        $stmt = $pdo->prepare("SELECT * FROM `" . self::DB_TABLE . "`" . $sortSQL);
+        $stmt = $pdo->prepare("select e.*, r.name as room_name from `" . self::DB_TABLE . "` as e inner join room as r on e.room = r.room_id " . $sortSQL);
         $stmt->execute([]);
 
         $employees = [];
@@ -89,6 +95,7 @@ class Employee
             'job',
             'wage',
             'room',
+            'room_name',
             'login',
             'password',
             'admin'

@@ -7,6 +7,7 @@ class EmployeesPage extends CRUDPage
 
     public function __construct()
     {
+        session_start();
         $this->title = "Výpis zamestnancu";
     }
 
@@ -57,7 +58,7 @@ class EmployeesPage extends CRUDPage
         //prezentovat data
         $html .= MustacheProvider::get()->render('employeeList', [
             'employees' => $employees,
-            'isAdmin' => isset($_SESSION['admin']) && $_SESSION['admin'] === true
+            'isAdmin' => isset($_SESSION['admin']) && $_SESSION['admin'] === 1
         ]);
 
         return $html;
@@ -88,6 +89,9 @@ class EmployeesPage extends CRUDPage
         }
     }
 }
+
+$page = new EmployeesPage();
+$page->render();
 
 
 ?>
